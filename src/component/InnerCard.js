@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Modal from "react-bootstrap4-modal";
 import { connect } from "react-redux";
-import { deleteBacklog } from "../action";
+import { deleteBacklog, moveToTodo } from "../action";
 
 class InnerCard extends Component {
   constructor(props) {
@@ -78,7 +78,30 @@ class InnerCard extends Component {
     this.setState({ visibility: false });
   }
 
-  handleMove() {
+  handleMove(e) {
+    const group = e.target.getAttribute("group");
+    const number = e.target.getAttribute("number");
+    let data;
+    if (group === "Backlog") {
+      data = {
+        title: this.props.backlog[number].title,
+        description: this.props.backlog[number].description,
+        point: this.props.backlog[number].point,
+        assignedTo: this.props.backlog[number].assignedTo
+      };
+      this.props.moveToTodo(data);
+      this.props.deleteBacklog(number);
+    } else if (group === "Todo") {
+      // this.props.deleteTodo(number)
+    } else if (group === "Doing") {
+      // this.props.deleteDoing(number)
+    } else if (group === "Done") {
+      // this.props.deleteDone(number)
+    }
+    console.log("delete");
+
+    this.setState({ visibility: false });
+
     console.log("move");
   }
 
@@ -194,5 +217,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deleteBacklog }
+  { deleteBacklog, moveToTodo }
 )(InnerCard);

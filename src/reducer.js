@@ -1,4 +1,4 @@
-import { ADD_BACKLOG, DELETE_BACKLOG } from "./action";
+import { ADD_BACKLOG, DELETE_BACKLOG, MOVE_TO_TODO } from "./action";
 
 const initialState = {
   backlog: [],
@@ -21,6 +21,11 @@ export default function(state = initialState, action) {
           ...state.backlog.slice(0, action.payload),
           ...state.backlog.slice(action.payload + 1)
         ]
+      };
+    case MOVE_TO_TODO:
+      return {
+        ...state,
+        todo: [...state.todo, action.payload]
       };
     default:
       return state;

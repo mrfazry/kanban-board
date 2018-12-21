@@ -20,3 +20,10 @@ export const deleteBacklog = number => {
     payload: number
   };
 };
+
+export const moveToTodo = data => {
+  return {
+    type: MOVE_TO_TODO,
+    payload: data
+  };
+};
