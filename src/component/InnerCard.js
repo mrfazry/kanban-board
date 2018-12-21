@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Modal from "react-bootstrap4-modal";
 import { connect } from "react-redux";
+import { deleteBacklog } from "../action";
 
 class InnerCard extends Component {
   constructor(props) {
@@ -19,10 +20,8 @@ class InnerCard extends Component {
   }
 
   handleClick(e) {
-    console.log(e.target);
     const group = e.target.getAttribute("group");
     const number = e.target.getAttribute("number");
-    console.log(group, number);
 
     if (group === "Backlog") {
       console.log(this.props.backlog);
@@ -62,8 +61,21 @@ class InnerCard extends Component {
     this.setState({ visibility: false });
   }
 
-  handleDelete() {
+  handleDelete(e) {
+    const group = e.target.getAttribute("group");
+    const number = e.target.getAttribute("number");
+    if (group === "Backlog") {
+      this.props.deleteBacklog(number);
+    } else if (group === "Todo") {
+      // this.props.deleteTodo(number)
+    } else if (group === "Doing") {
+      // this.props.deleteDoing(number)
+    } else if (group === "Done") {
+      // this.props.deleteDone(number)
+    }
     console.log("delete");
+
+    this.setState({ visibility: false });
   }
 
   handleMove() {
@@ -71,8 +83,84 @@ class InnerCard extends Component {
   }
 
   render() {
-    const { title, point, description, assignedTo, number, group } = this.props;
+    const { title, point, assignedTo, number, group } = this.props;
     const { visibility } = this.state;
+    let next, previous;
+
+    if (group === "Backlog") {
+      previous = null;
+      next = "Todo";
+    } else if (group === "Todo") {
+      previous = "Backlog";
+      next = "Doing";
+    } else if (group === "Doing") {
+      previous = "Todo";
+      next = "Done";
+    } else if (group === "Done") {
+      previous = "Doing";
+      next = null;
+    }
+
+    const modal = (
+      <Modal visible={visibility} onClickBackdrop={this.handleCancel}>
+        <div className="modal-header">
+          <h5 className="modal-title" style={{ margin: "0 auto" }}>
+            {this.state.title}
+          </h5>
+        </div>
+        <div className="modal-body">
+          <p>
+            <strong>For:</strong>
+          </p>
+          <p>{this.state.assignedTo}</p>
+          <p>
+            <strong>Description:</strong>
+          </p>
+          <p>{this.state.description}</p>
+          <p>
+            <strong>Point:</strong>
+          </p>
+          <p>{this.state.point}</p>
+          <p>
+            <strong>Status:</strong>
+          </p>
+          <p>{group}</p>
+        </div>
+        <div className="modal-footer">
+          {previous !== null ? (
+            <button
+              number={number}
+              group={group}
+              type="button"
+              className="btn btn-primary"
+              onClick={this.handleMove}
+            >
+              Move to {previous}
+            </button>
+          ) : null}
+          <button
+            number={number}
+            group={group}
+            type="button"
+            className="btn btn-danger"
+            onClick={this.handleDelete}
+          >
+            Delete
+          </button>
+          {next !== null ? (
+            <button
+              number={number}
+              group={group}
+              type="button"
+              className="btn btn-info"
+              onClick={this.handleMove}
+            >
+              Move to {next}
+            </button>
+          ) : null}
+        </div>
+      </Modal>
+    );
 
     return (
       <div className="card">
@@ -91,47 +179,7 @@ class InnerCard extends Component {
         >
           Show detail
         </button>
-        <Modal visible={visibility} onClickBackdrop={this.handleCancel}>
-          <div className="modal-header">
-            <h5 className="modal-title" style={{ margin: "0 auto" }}>
-              {this.state.title}
-            </h5>
-          </div>
-          <div className="modal-body">
-            <p>
-              <strong>For:</strong>
-            </p>
-            <p>{this.state.assignedTo}</p>
-            <p>
-              <strong>Description:</strong>
-            </p>
-            <p>{this.state.description}</p>
-            <p>
-              <strong>Point:</strong>
-            </p>
-            <p>{this.state.point}</p>
-            <p>
-              <strong>Status:</strong>
-            </p>
-            <p>{group}</p>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={this.handleDelete}
-            >
-              Delete
-            </button>
-            <button
-              type="button"
-              className="btn btn-info"
-              onClick={this.handleMove}
-            >
-              Move to Todo
-            </button>
-          </div>
-        </Modal>
+        {modal}
       </div>
     );
   }
@@ -146,5 +194,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  null
+  { deleteBacklog }
 )(InnerCard);

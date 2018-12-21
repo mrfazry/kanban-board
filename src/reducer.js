@@ -1,4 +1,4 @@
-import { ADD_BACKLOG } from "./action";
+import { ADD_BACKLOG, DELETE_BACKLOG } from "./action";
 
 const initialState = {
   backlog: [],
@@ -13,6 +13,14 @@ export default function(state = initialState, action) {
       return {
         ...state,
         backlog: [...state.backlog, action.payload]
+      };
+    case DELETE_BACKLOG:
+      return {
+        ...state,
+        backlog: [
+          ...state.backlog.slice(0, action.payload),
+          ...state.backlog.slice(action.payload + 1)
+        ]
       };
     default:
       return state;

@@ -13,3 +13,10 @@ export const addBacklog = data => {
     payload: data
   };
 };
+
+export const deleteBacklog = number => {
+  return {
+    type: DELETE_BACKLOG,
+    payload: number
+  };
+};
