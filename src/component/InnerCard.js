@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import Modal from "react-bootstrap4-modal";
 import { connect } from "react-redux";
-import { deleteBacklog, moveToTodo } from "../action";
+import {
+  addBacklog,
+  deleteBacklog,
+  moveToTodo,
+  deleteTodo,
+  moveToDoing,
+  deleteDoing,
+  moveToDone,
+  deleteDone
+} from "../action";
 
 class InnerCard extends Component {
   constructor(props) {
@@ -67,11 +76,11 @@ class InnerCard extends Component {
     if (group === "Backlog") {
       this.props.deleteBacklog(number);
     } else if (group === "Todo") {
-      // this.props.deleteTodo(number)
+      this.props.deleteTodo(number);
     } else if (group === "Doing") {
-      // this.props.deleteDoing(number)
+      this.props.deleteDoing(number);
     } else if (group === "Done") {
-      // this.props.deleteDone(number)
+      this.props.deleteDone(number);
     }
     console.log("delete");
 
@@ -81,7 +90,9 @@ class InnerCard extends Component {
   handleMove(e) {
     const group = e.target.getAttribute("group");
     const number = e.target.getAttribute("number");
+    const direction = e.target.getAttribute("direction");
     let data;
+
     if (group === "Backlog") {
       data = {
         title: this.props.backlog[number].title,
@@ -89,16 +100,57 @@ class InnerCard extends Component {
         point: this.props.backlog[number].point,
         assignedTo: this.props.backlog[number].assignedTo
       };
+
       this.props.moveToTodo(data);
       this.props.deleteBacklog(number);
     } else if (group === "Todo") {
+      data = {
+        title: this.props.todo[number].title,
+        description: this.props.todo[number].description,
+        point: this.props.todo[number].point,
+        assignedTo: this.props.todo[number].assignedTo
+      };
+
+      if (direction === "next") {
+        // move to doing
+        this.props.moveToDoing(data);
+      } else if (direction === "previous") {
+        // move to backlog
+        this.props.addBacklog(data);
+      }
+
+      this.props.deleteTodo(number);
       // this.props.deleteTodo(number)
     } else if (group === "Doing") {
+      data = {
+        title: this.props.doing[number].title,
+        description: this.props.doing[number].description,
+        point: this.props.doing[number].point,
+        assignedTo: this.props.doing[number].assignedTo
+      };
+
+      if (direction === "next") {
+        // move to done
+        this.props.moveToDone(data);
+      } else if (direction === "previous") {
+        // move to todo
+        this.props.moveToTodo(data);
+      }
+
+      this.props.deleteDoing(number);
       // this.props.deleteDoing(number)
     } else if (group === "Done") {
+      data = {
+        title: this.props.done[number].title,
+        description: this.props.done[number].description,
+        point: this.props.done[number].point,
+        assignedTo: this.props.done[number].assignedTo
+      };
+
+      this.props.moveToDoing(data);
+      this.props.deleteDone(number);
       // this.props.deleteDone(number)
     }
-    console.log("delete");
 
     this.setState({ visibility: false });
 
@@ -150,37 +202,45 @@ class InnerCard extends Component {
           <p>{group}</p>
         </div>
         <div className="modal-footer">
-          {previous !== null ? (
+          <div className="col-sm">
+            {previous !== null ? (
+              <button
+                number={number}
+                group={group}
+                direction="previous"
+                type="button"
+                className="btn btn-primary"
+                onClick={this.handleMove}
+              >
+                Move to {previous}
+              </button>
+            ) : null}
+          </div>
+          <div className="col-sm">
             <button
               number={number}
               group={group}
               type="button"
-              className="btn btn-primary"
-              onClick={this.handleMove}
+              className="btn btn-danger"
+              onClick={this.handleDelete}
             >
-              Move to {previous}
+              Delete
             </button>
-          ) : null}
-          <button
-            number={number}
-            group={group}
-            type="button"
-            className="btn btn-danger"
-            onClick={this.handleDelete}
-          >
-            Delete
-          </button>
-          {next !== null ? (
-            <button
-              number={number}
-              group={group}
-              type="button"
-              className="btn btn-info"
-              onClick={this.handleMove}
-            >
-              Move to {next}
-            </button>
-          ) : null}
+          </div>
+          <div className="col-sm">
+            {next !== null ? (
+              <button
+                number={number}
+                group={group}
+                direction="next"
+                type="button"
+                className="btn btn-info"
+                onClick={this.handleMove}
+              >
+                Move to {next}
+              </button>
+            ) : null}
+          </div>
         </div>
       </Modal>
     );
@@ -217,5 +277,14 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deleteBacklog, moveToTodo }
+  {
+    addBacklog,
+    deleteBacklog,
+    moveToTodo,
+    deleteTodo,
+    moveToDoing,
+    deleteDoing,
+    moveToDone,
+    deleteDone
+  }
 )(InnerCard);

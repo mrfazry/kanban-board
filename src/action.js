@@ -27,3 +27,38 @@ export const moveToTodo = data => {
     payload: data
   };
 };
+
+export const deleteTodo = number => {
+  return {
+    type: DELETE_TODO,
+    payload: number
+  };
+};
+
+export const moveToDoing = data => {
+  return {
+    type: MOVE_TO_DOING,
+    payload: data
+  };
+};
+
+export const deleteDoing = number => {
+  return {
+    type: DELETE_DOING,
+    payload: number
+  };
+};
+
+export const moveToDone = data => {
+  return {
+    type: MOVE_TO_DONE,
+    payload: data
+  };
+};
+
+export const deleteDone = number => {
+  return {
+    type: DELETE_DONE,
+    payload: number
+  };
+};
