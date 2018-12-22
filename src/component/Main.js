@@ -36,17 +36,14 @@ class Main extends Component {
   }
 
   handleClick() {
-    console.log("invoke modal");
     this.setState({ visibility: true });
   }
 
   handleCancel() {
-    console.log("cancel");
     this.clearState();
   }
 
   handleAdd() {
-    console.log("task added");
     const data = {
       title: this.state.title,
       description: this.state.description,

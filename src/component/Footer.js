@@ -23,7 +23,6 @@ export default class Footer extends Component {
     )
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         this.setState({
           temp: data.main.temp,
           loading: false
@@ -37,20 +36,7 @@ export default class Footer extends Component {
 
   render() {
     const { temp, loading } = this.state;
-    // console.log(temp, date, loading);
     const currentTime = new Date(Date.now()).toLocaleString();
-    // console.log(currentTime);
-    // console.log(new Date(Date.now()).toLocaleString());
-    // const date = currentTime.getDate();
-    // const month = currentTime.getMonth();
-    // const year = currentTime.getFullYear();
-    // const hour = currentTime.getHours();
-    // const minute = currentTime.getMinutes();
-    // if (minute < 10) {
-    //   minute = "0" + minute;
-    // }
-    // const second = currentTime.getSeconds();
-    // const dateString = `Today is ${date} ${month} ${year}, ${hour}:${minute}:${second}`;
     const render =
       loading === true ? (
         <p>

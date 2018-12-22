@@ -33,7 +33,6 @@ class InnerCard extends Component {
     const number = e.target.getAttribute("number");
 
     if (group === "Backlog") {
-      console.log(this.props.backlog);
       this.setState({
         title: this.props.backlog[number].title,
         description: this.props.backlog[number].description,
@@ -82,7 +81,6 @@ class InnerCard extends Component {
     } else if (group === "Done") {
       this.props.deleteDone(number);
     }
-    console.log("delete");
 
     this.setState({ visibility: false });
   }
@@ -153,8 +151,6 @@ class InnerCard extends Component {
     }
 
     this.setState({ visibility: false });
-
-    console.log("move");
   }
 
   render() {
