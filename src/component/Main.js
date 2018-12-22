@@ -73,7 +73,7 @@ class Main extends Component {
     const { visibility } = this.state;
 
     return (
-      <div className="container-fluid">
+      <div className="container-fluid" style={{ marginBottom: "20px" }}>
         <div className="row">
           <button
             type="button"
