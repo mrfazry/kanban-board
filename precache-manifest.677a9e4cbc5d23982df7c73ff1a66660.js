@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/kanban-board/static/css/main.86d3da89.chunk.css"
   },
   {
-    "revision": "e413894d10d9b27bbae735c0de517e6e",
+    "revision": "40428b549e0b4399a597dd0782e38fb0",
     "url": "/kanban-board/index.html"
   }
 ];
