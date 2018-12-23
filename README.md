@@ -1,16 +1,30 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This project is a simple functional kanban board. User can create new task, move it to some states/status (backlog, todo, doing, done) and delete it.
+In the bottom of the page current time and current weather from OpenWeatherMap API are displayed.
+
+## To install locally
+You can download the code from the "Clone or download" button on this page or using terminal:
+### `$ git clone https://github.com/mrfazry/kanban-board`
+
+Unzip the file if you downloaded from the website or if you are using terminal, move to the root of the project:
+### `$ cd kanban-board`
+
+Then:
+### `$ npm start`
+
+The app will be launched automatically on your default browser at `localhost:3000`
+
+## Dependencies
+Additional dependencies are `redux/react-redux` for state management, `redux-persist` for persisting state, and `react-bootstrap4-modal` for creating modal/popup form.
+
+The design is using Bootstrap 4. The CDN script is embedded on the html page.
+
+_____________________________________
+
 ## Available Scripts
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Additional scripts and information from `create-react-app`.
 
 ### `npm test`
 
